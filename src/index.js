@@ -1,6 +1,8 @@
 module.exports = function getZerosCount(number, base) {
     var baseExp = [];
     var exp = [];
+    var arr = [];
+    var result = number;
 
     for (var i = 2; i <= base; i++) {
         var exponent = 0;
@@ -13,21 +15,20 @@ module.exports = function getZerosCount(number, base) {
             exp.push(exponent);
         }
     }
-    var result = 0;
-    for (var i = 0; i < baseExp.length; i++) {
-        // for baseExp
-        for (var j = 1; j <= exp[i]; j++) {
-            var n = number;
-            if (n % Math.pow(baseExp[i], exp[i]) === 0) {
-                result += n / Math.pow(baseExp[i], exp[i]);
-                break;
-            } else {
-                result = Math.trunc(n / Math.pow(baseExp[i], exp[i]));
-                n -= result;
-            }
-        }
 
+    for (var i = 0; i < baseExp.length; i++) {
+        var value = 1;
+        arr[i] = 0;
+        while (value <= number) {
+            value *= baseExp[i];
+            arr[i] += Math.floor(number / value);
+        }
+        
+        result = Math.min(result, Math.floor(arr[i] / exp[i]));
     }
+
+    return result;
+
 
     console.log(baseExp);
     console.log(exp);
